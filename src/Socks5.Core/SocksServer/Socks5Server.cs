@@ -78,14 +78,15 @@ public class Socks5Server
         if (!_started) return;
         _server.Stop();
 
-        try
+        foreach (var t in Clients)
         {
-            foreach (var t in Clients)
+            try
             {
+
                 t.Client.Disconnect();
             }
+            catch (Exception) { }
         }
-        catch (Exception) { }
 
         Clients.Clear();
         _started = false;
