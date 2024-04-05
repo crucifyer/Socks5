@@ -205,10 +205,12 @@ public class DarthEncrypt
         if (HashType == DcHashTypes.Sha384) strHashName = "SHA384";
         if (HashType == DcHashTypes.Sha512) strHashName = "SHA512";
         var rgbKey = new PasswordDeriveBytes(PassPhrase, rgbSalt, strHashName, PassPhraseStrength).GetBytes(num / 8);
-        var managed = new RijndaelManaged();
-        managed.Mode = CipherMode.CBC;
-        managed.Padding = PaddingMode.Zeros;
-        var transform = managed.CreateDecryptor(rgbKey, bytes);
+        var aes = Aes.Create();
+        aes.Key = rgbKey;
+        aes.IV = bytes;
+        aes.Mode = CipherMode.CBC;
+        aes.Padding = PaddingMode.Zeros;
+        var transform = aes.CreateDecryptor(aes.Key, aes.IV);
         var stream = new MemoryStream(buffer);
         var stream2 = new CryptoStream(stream, transform, CryptoStreamMode.Read);
         var buffer5 = new byte[buffer.Length];
@@ -237,9 +239,11 @@ public class DarthEncrypt
         if (HashType == DcHashTypes.Sha384) strHashName = "SHA384";
         if (HashType == DcHashTypes.Sha512) strHashName = "SHA512";
         var rgbKey = new PasswordDeriveBytes(PassPhrase, rgbSalt, strHashName, PassPhraseStrength).GetBytes(num / 8);
-        var managed = new RijndaelManaged();
-        managed.Mode = CipherMode.CBC;
-        var transform = managed.CreateDecryptor(rgbKey, bytes);
+        var aes = Aes.Create();
+        aes.Key = rgbKey;
+        aes.IV = bytes;
+        aes.Mode = CipherMode.CBC;
+        var transform = aes.CreateDecryptor(aes.Key, aes.IV);
         var stream = new MemoryStream(buffer);
         var stream2 = new CryptoStream(stream, transform, CryptoStreamMode.Read);
         var buffer5 = new byte[buffer.Length];
@@ -263,12 +267,12 @@ public class DarthEncrypt
         if (HashType == DcHashTypes.Sha384) strHashName = "SHA384";
         if (HashType == DcHashTypes.Sha512) strHashName = "SHA512";
         var rgbKey = new PasswordDeriveBytes(PassPhrase, rgbSalt, strHashName, PassPhraseStrength).GetBytes(num / 8);
-        var managed = new RijndaelManaged();
-        managed.Mode = CipherMode.CBC;
+        var aes = Aes.Create();
+        aes.Mode = CipherMode.CBC;
         if (aType == TransformType.Encrypt)
-            transform = managed.CreateEncryptor(rgbKey, bytes);
+            transform = aes.CreateEncryptor(rgbKey, bytes);
         else
-            transform = managed.CreateDecryptor(rgbKey, bytes);
+            transform = aes.CreateDecryptor(rgbKey, bytes);
         var path = "";
         if (newFileName == null)
         {
@@ -304,7 +308,7 @@ public class DarthEncrypt
         {
             var count = 0;
             var num3 = 0;
-            var num4 = managed.BlockSize / 8;
+            var num4 = aes.BlockSize / 8;
             var buffer = new byte[num4];
             var num5 = 0;
             using (var stream3 = new FileStream(inFile, FileMode.Open))
@@ -372,10 +376,12 @@ public class DarthEncrypt
         if (HashType == DcHashTypes.Sha384) strHashName = "SHA384";
         if (HashType == DcHashTypes.Sha512) strHashName = "SHA512";
         var rgbKey = new PasswordDeriveBytes(PassPhrase, rgbSalt, strHashName, PassPhraseStrength).GetBytes(num / 8);
-        var managed = new RijndaelManaged();
-        managed.Mode = CipherMode.CBC;
-        managed.Padding = PaddingMode.Zeros;
-        var transform = managed.CreateEncryptor(rgbKey, bytes);
+        var aes = Aes.Create();
+        aes.Key = rgbKey;
+        aes.IV = bytes;
+        aes.Mode = CipherMode.CBC;
+        aes.Padding = PaddingMode.Zeros;
+        var transform = aes.CreateEncryptor(aes.Key, aes.IV);
         var stream = new MemoryStream();
         var stream2 = new CryptoStream(stream, transform, CryptoStreamMode.Write);
         stream2.Write(buffer, 0, buffer.Length);
@@ -406,9 +412,11 @@ public class DarthEncrypt
         if (HashType == DcHashTypes.Sha384) strHashName = "SHA384";
         if (HashType == DcHashTypes.Sha512) strHashName = "SHA512";
         var rgbKey = new PasswordDeriveBytes(PassPhrase, rgbSalt, strHashName, PassPhraseStrength).GetBytes(num / 8);
-        var managed = new RijndaelManaged();
-        managed.Mode = CipherMode.CBC;
-        var transform = managed.CreateEncryptor(rgbKey, bytes);
+        var aes = Aes.Create();
+        aes.Key = rgbKey;
+        aes.IV = bytes;
+        aes.Mode = CipherMode.CBC;
+        var transform = aes.CreateEncryptor(aes.Key, aes.IV);
         var stream = new MemoryStream();
         var stream2 = new CryptoStream(stream, transform, CryptoStreamMode.Write);
         stream2.Write(buffer, 0, buffer.Length);
